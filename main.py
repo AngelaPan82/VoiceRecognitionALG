@@ -19,26 +19,16 @@ recognizer = sr.Recognizer()
 with sr.Microphone() as mic:
     recognizer.adjust_for_ambient_noise(mic, duration=0.1)
 
-"""while True:
-    try:
-        with sr.Microphone() as mic:
-            recognizer.adjust_for_ambient_noise(mic, duration=0.2)
-            audio = recognizer.listen(mic)
-
-            text = recognizer.recognize_google(audio)
-            text = text.lower()
-
-            print(f"Recognized: {text}")
-
-    except sr.UnknownValueError:
-        recognizer = sr.Recognizer()
-        continue"""
+# Start listening in the background 
 stop_listening = recognizer.listen_in_background(mic, callback)
-
+# This is the main loop
 try:
+
     while True:
         time.sleep(0.1)
+
 except KeyboardInterrupt:
+    # If keyboard interrupt occurs it stops the program and writes  the following message:
     print("\nProgram stopped by user.")
     stop_listening(wait_for_stop=False)
     time.sleep(1)
