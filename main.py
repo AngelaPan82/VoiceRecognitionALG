@@ -1,4 +1,5 @@
 # Verify distutils installation
+# importing some modules from distutils and some other packages. 
 try:
     import distutils
     print("distutils installed successfully")
@@ -9,7 +10,7 @@ except ImportError:
     import sys
     subprocess.check_call([sys.executable, "-m", "pip", "install", "setuptools"])
 
-# Import necessary modules
+
 import speech_recognition as sr
 import pyttsx3
 
@@ -29,3 +30,8 @@ while True:
     except sr.UnknownValueError:
         recognizer = sr.Recognizer()
         continue
+
+    #We will throw an exception if the user stops the program (exception for keyboard interrupt)
+    except KeyboardInterrupt:
+        print("Program stopped by user.")
+        break
