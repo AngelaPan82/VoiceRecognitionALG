@@ -1,22 +1,25 @@
-# Verify distutils installation
-# importing some modules from distutils and some other packages. 
-try:
-    import distutils
-    print("distutils installed successfully")
-except ImportError:
-    print("distutils is not installed")
-    # If distutils is not installed, you can install it using pip
-    import subprocess
-    import sys
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "setuptools"])
-
-
 import speech_recognition as sr
-import pyttsx3
+import time
+print("Hi speak to me!")
+
+#trying non-blocking recognition
+def callback(recognizer, audio):
+    try:
+        text = recognizer.recognize_google(audio)
+        print("You said: " + text)
+    except sr.UnknownValueError:
+        print("Google Speech Recognition could not understand audio")
+    except sr.RequestError as e:
+        print("Could not request results from Google Speech Recognition service; {0}".format(e))
+
+r = sr.Recognizer()
 
 recognizer = sr.Recognizer()
 
-while True:
+with sr.Microphone() as mic:
+    recognizer.adjust_for_ambient_noise(mic, duration=0.1)
+
+"""while True:
     try:
         with sr.Microphone() as mic:
             recognizer.adjust_for_ambient_noise(mic, duration=0.2)
@@ -29,9 +32,13 @@ while True:
 
     except sr.UnknownValueError:
         recognizer = sr.Recognizer()
-        continue
+        continue"""
+stop_listening = recognizer.listen_in_background(mic, callback)
 
-    #We will throw an exception if the user stops the program (exception for keyboard interrupt)
-    except KeyboardInterrupt:
-        print("Program stopped by user.")
-        break
+try:
+    while True:
+        time.sleep(0.1)
+except KeyboardInterrupt:
+    print("\nProgram stopped by user.")
+    stop_listening(wait_for_stop=False)
+    time.sleep(1)
