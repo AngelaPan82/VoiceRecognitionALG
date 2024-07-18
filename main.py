@@ -8,6 +8,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 print("Hi speak to me!")
 
 #trying non-blocking recognition
+#Print is replaced with logging.error because it gives more information for each error and proveds a timestamp
 def callback(recognizer, audio):
     def process_audio(recognizer, audio):
         try:
@@ -36,6 +37,6 @@ try:
 
 except KeyboardInterrupt:
     # If keyboard interrupt occurs it stops the program and writes  the following message:
-    print("\nProgram stopped by user.")
+    logging.info("\nProgram stopped by user.")
     stop_listening(wait_for_stop=False)
     time.sleep(1)
