@@ -1,17 +1,24 @@
 import speech_recognition as sr
 import time
+import logging
+import threading
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
 print("Hi speak to me!")
 
 #trying non-blocking recognition
 def callback(recognizer, audio):
-    try:
-        text = recognizer.recognize_google(audio)
-        print("You said: " + text)
-    except sr.UnknownValueError:
-        print("Google Speech Recognition could not understand audio")
-    except sr.RequestError as e:
-        print("Could not request results from Google Speech Recognition service; {0}".format(e))
+    def process_audio(recognizer, audio):
+        try:
+            text = recognizer.recognize_google(audio)
+            logging.info("You said: " + text)
+        except sr.UnknownValueError:
+            logging.error("Google Speech Recognition could not understand audio")
+        except sr.RequestError as e:
+            logging.error("Could not request results from Google Speech Recognition service; {0}".format(e))
 
+    threading.Thread(target=process_audio, args=(recognizer, audio)).start()
 r = sr.Recognizer()
 
 recognizer = sr.Recognizer()
