@@ -22,25 +22,27 @@ def callback(recognizer, audio):
     threading.Thread(target=process_audio, args=(recognizer, audio)).start()
 
 
-recognizer = sr.Recognizer()
+
 def adjusting_noise_level(mic, recognizer):
     while True:
         recognizer.adjust_for_ambient_noise(mic, duration=0.1)
         time.sleep(1)
 
-r = sr.Recognizer()
+recognizer = sr.Recognizer()
+
+#r = sr.Recognizer()
 #starting a seperate thread for adjusting the noise level
 with sr.Microphone() as mic:
-    noise_thread = threading.Thread(target=adjusting_noise_level, args=(mic, r))
+    noise_thread = threading.Thread(target=adjusting_noise_level, args=(mic, recognizer))
     noise_thread.daemon=True
     noise_thread.start()
 
 
 # Start listening in the background 
 stop_listening = recognizer.listen_in_background(mic, callback)
+
 # This is the main loop
 try:
-
     while True:
         time.sleep(0.1)
 
