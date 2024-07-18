@@ -20,12 +20,21 @@ def callback(recognizer, audio):
             logging.error("Could not request results from Google Speech Recognition service; {0}".format(e))
 
     threading.Thread(target=process_audio, args=(recognizer, audio)).start()
-r = sr.Recognizer()
+
 
 recognizer = sr.Recognizer()
+def adjusting_noise_level(mic, recognizer):
+    while True:
+        recognizer.adjust_for_ambient_noise(mic, duration=0.1)
+        time.sleep(1)
 
+r = sr.Recognizer()
+#starting a seperate thread for adjusting the noise level
 with sr.Microphone() as mic:
-    recognizer.adjust_for_ambient_noise(mic, duration=0.1)
+    noise_thread = threading.Thread(target=adjusting_noise_level, args=(mic, r))
+    noise_thread.daemon=True
+    noise_thread.start()
+
 
 # Start listening in the background 
 stop_listening = recognizer.listen_in_background(mic, callback)
