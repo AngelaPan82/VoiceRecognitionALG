@@ -32,8 +32,11 @@ with sr.Microphone() as mic:
     recognizer.adjust_for_ambient_noise(mic,duration=0.1)
     print("Say something!")
     
-    stop_listening = recognizer.listen_in_background(mic, callback)
-    print("Listening...")
+
+
+mic = sr.Microphone()
+stop_listening = recognizer.listen_in_background(mic, callback)
+print("Listening...")
 
 
 try:
