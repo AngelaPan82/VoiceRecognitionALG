@@ -7,7 +7,6 @@ print("Hi speak to me!")
 #trying non-blocking recognition
 #Print is replaced with logging.error because it gives more information for each error and proveds a timestamp
 def callback(recognizer, audio):
-    print("Callback  triggered")
     def process_audio():
         print("process_audio triggered")
     try:
@@ -31,7 +30,6 @@ with sr.Microphone() as mic:
 
 mic = sr.Microphone()
 stop_listening = recognizer.listen_in_background(mic, callback)
-print("Listening...")
 
 
 try:
