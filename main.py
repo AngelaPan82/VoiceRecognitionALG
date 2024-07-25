@@ -11,6 +11,11 @@ def callback(recognizer, audio):
     def process_audio():
         print("process_audio triggered")
     try:
+        #save the audio to a file and print the text
+        with open("microphone-results.wav", "wb") as f:
+            f.write(audio.get_wav_data())
+        print("Audio saved to microphone-results.wav")
+
         text = recognizer.recognize_google(audio)
         print("You said: " + text)
     except sr.UnknownValueError:
@@ -27,14 +32,13 @@ with sr.Microphone() as mic:
     recognizer.adjust_for_ambient_noise(mic,duration=0.1)
     print("Say something!")
     
-    
-stop_listening = recognizer.listen_in_background(mic, callback)
-print("Listening...")
+    stop_listening = recognizer.listen_in_background(mic, callback)
+    print("Listening...")
 
 
 try:
     while True:
-        print("Main loop running")
+      #  print("Main loop running")
         time.sleep(0.1)
 except KeyboardInterrupt:
     # If keyboard interrupt occurs it stops the program and writes  the following message:
