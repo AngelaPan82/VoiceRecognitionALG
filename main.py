@@ -1,10 +1,6 @@
 import speech_recognition as sr
 import time
 
-
-
-#logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
-
 print("Hi speak to me!")
 
 #trying non-blocking recognition
