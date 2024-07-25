@@ -11,11 +11,6 @@ def callback(recognizer, audio):
     def process_audio():
         print("process_audio triggered")
     try:
-        #save the audio to a file and print the text
-        with open("microphone-results.wav", "wb") as f:
-            f.write(audio.get_wav_data())
-        print("Audio saved to microphone-results.wav")
-
         text = recognizer.recognize_google(audio)
         print("You said: " + text)
     except sr.UnknownValueError:
