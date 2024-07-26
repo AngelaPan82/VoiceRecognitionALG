@@ -1,8 +1,15 @@
 import speech_recognition as sr
 import time
 import threading
+import subprocess
 
 print("Hi speak to me!")
+#executing function for system commands
+def execute_command(command):
+    try:
+        subprocess.run(command, check=True)
+    except subprocess.CalledProcessError as e:
+        print("Command failed with error code")
 
 #trying non-blocking recognition
 #Print is replaced with logging.error because it gives more information for each error and proveds a timestamp
@@ -42,4 +49,3 @@ except KeyboardInterrupt:
     stop_listening(wait_for_stop=False)
     time.sleep(1)
 
-#initial commite
