@@ -7,8 +7,8 @@ import platform
 print("Hi speak to me!")
 
 user_voice_prints ={
-    "user1":"This is sample for user1",
-    "user2":"This is sample for user2"
+    "user1":"user one",
+    "user2":"user2"
 }
 #Funcion to simulate the creation of a voice print
 def create_voice_print(audio):
