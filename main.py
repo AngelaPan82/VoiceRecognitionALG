@@ -9,7 +9,20 @@ def execute_command(command):
     try:
         subprocess.run(command, check=True)
     except subprocess.CalledProcessError as e:
-        print("Command failed with error code")
+        print("Command failed with error code {e.returncode}")
+
+def process_audio(recognizer, audio):
+    try:
+        text = recognizer.recognize_google(audio).lower()
+        print("You said: " + text)
+        if "open google" in text:
+            print("Opening web browser")
+            #opening the web browser 
+            execute_command(["xdg-open", "https://www.google.com/search?q="])
+    except sr.UnknownValueError:
+        print("Google Speech Recognition could not understand audio")
+    except sr.RequestError as e:
+        print("Could not request results from Google Speech Recognition service; {0}".format(e))
 
 #trying non-blocking recognition
 #Print is replaced with logging.error because it gives more information for each error and proveds a timestamp
