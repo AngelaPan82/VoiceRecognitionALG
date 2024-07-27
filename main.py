@@ -18,7 +18,7 @@ def process_audio(recognizer, audio):
         if "open google" in text:
             print("Opening web browser")
             #opening the web browser 
-            execute_command(["xdg-open", "https://www.google.com/search?q="])
+            execute_command(["start", "google-chrome"])
     except sr.UnknownValueError:
         print("Google Speech Recognition could not understand audio")
     except sr.RequestError as e:
@@ -36,7 +36,6 @@ with sr.Microphone() as mic:
     recognizer.adjust_for_ambient_noise(mic,duration=0.1)
     print("Say something!")
     
-
 
 mic = sr.Microphone()
 stop_listening = recognizer.listen_in_background(mic, callback)
