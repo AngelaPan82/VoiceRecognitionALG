@@ -27,17 +27,7 @@ def process_audio(recognizer, audio):
 #trying non-blocking recognition
 #Print is replaced with logging.error because it gives more information for each error and proveds a timestamp
 def callback(recognizer, audio):
-    def process_audio():
-        print("process_audio triggered")
-    try:
-        text = recognizer.recognize_google(audio)
-        print("You said: " + text)
-    except sr.UnknownValueError:
-        print("Google Speech Recognition could not understand audio")
-    except sr.RequestError as e:
-        print("Could not request results from Google Speech Recognition service; {0}".format(e))
-
-    threading.Thread(target=process_audio).start()
+    threading.Thread(target=process_audio, args=(recognizer,audio)).start()
 
 recognizer = sr.Recognizer()
 
