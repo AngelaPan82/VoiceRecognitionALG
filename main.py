@@ -2,23 +2,29 @@ import speech_recognition as sr
 import time
 import threading
 import subprocess
+import platform
 
 print("Hi speak to me!")
+
 #executing function for system commands
 def execute_command(command):
     try:
-        subprocess.run(command, check=True)
+        subprocess.run(command, check=True, shell=True)
     except subprocess.CalledProcessError as e:
-        print("Command failed with error code {e.returncode}")
+        print(f"Command failed with error code {e.returncode}")
 
 def process_audio(recognizer, audio):
     try:
         text = recognizer.recognize_google(audio).lower()
         print("You said: " + text)
-        if "open google" in text:
+        if "open google" in text or "open web browser" in text:
             print("Opening web browser")
-            #opening the web browser 
-            execute_command(["start", "google-chrome"])
+            if platform.system() == "Windows":
+                execute_command(["start", "chrome"])
+            elif platform.system() == "Linux":
+                execute_command(["google-chrome"])
+            elif platform.system() == "Darwin":
+                execute_command(["open -a", "Google Chrome"])  
     except sr.UnknownValueError:
         print("Google Speech Recognition could not understand audio")
     except sr.RequestError as e:
