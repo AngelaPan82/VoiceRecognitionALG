@@ -8,7 +8,6 @@ print("Hi speak to me!")
 
 user_voice_prints ={
     "user1":"user one",
-    "user2":"user2"
 }
 #Funcion to simulate the creation of a voice print
 def create_voice_print(audio):
@@ -45,7 +44,7 @@ def process_audio(recognizer, audio):
                 if "open google" in text or "open web browser" in text:
                     print("Opening web browser")
                     if platform.system() == "Windows":
-                        execute_command(["start", "chrome"])
+                        execute_command(["start chrome"])
                     elif platform.system() == "Linux":
                         execute_command(["google-chrome"])
                     elif platform.system() == "Darwin":
@@ -53,7 +52,7 @@ def process_audio(recognizer, audio):
                 else:
                     print("Second factor authentication failed")
             else:
-                 print("Voice authentication failed")
+                 print("Voice print authentication failed")
     except sr.UnknownValueError:
         print("Google Speech Recognition could not understand audio")
     except sr.RequestError as e:
