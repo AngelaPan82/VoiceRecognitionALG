@@ -9,6 +9,9 @@ print("Hi speak to me!")
 user_voice_prints ={
     "user1":"user one",
 }
+
+expected_pin = "one two three four"
+
 #Funcion to simulate the creation of a voice print
 def create_voice_print(audio):
     return "this is a sample voice print"
@@ -18,10 +21,10 @@ def verify_voice_print(audio, stored_voice_print):
     return create_voice_print(audio) == stored_voice_print
 
 #Second factor authentication its not a must but it is a good practice
-def verify_second_factor_print(audio, second_factor):
+def verify_pin(audio, second_factor):
     try:
         pin = recognizer.recognize_google(audio).lower()
-        return pin == "one two three four"
+        print(f"PIN you said: {pin}")
     except sr.UnknownValueError:
         print("Sorry, I didn't get that")
         return False
@@ -41,31 +44,26 @@ def process_audio(recognizer, audio):
     try:
         text = recognizer.recognize_google(audio).lower()
         print("You said: " + text)
-
-        user_id = "user1"
-        if verify_voice_print(audio, user_voice_prints[user_id]):
-            print("Voice print verified")
-        #Time for the second factor
-            second_factor = input("Please say your PIN: ")
+        
+        if "open google" in text or "open web browser" in text:
+            print("Voice print verifed.")
+            #ask for pin
+            print("Please say your pin.")
             with sr.Microphone() as mic:
                 recognizer.adjust_for_ambient_noise(mic, duration=0.1)
                 audio_pin = recognizer.listen(mic)
-            if verify_second_factor_print(audio, second_factor):
+            if verify_pin(audio_pin):
                 print("Second factor verified")
-                if "open google" in text or "open web browser" in text:
-                    print("Opening web browser")
-                    if platform.system() == "Windows":
-                        execute_command(["start chrome"])
-                    elif platform.system() == "Linux":
-                        execute_command(["google-chrome"])
-                    elif platform.system() == "Darwin":
-                        execute_command(["open -a", "Google Chrome"])  
-                    else:
-                        print("Command not recognized")
+                if platform.system() == "Windows":
+                     execute_command(["start chrome"])
+                elif platform.system() == "Linux":
+                    execute_command(["google-chrome"])
+                elif platform.system() == "Darwin":
+                    execute_command(["open -a", "Google Chrome"])  
                 else:
-                    print("Second factor authentication failed")
+                    print("Command not recognized")
             else:
-                 print("Voice print authentication failed")
+                print("Second factor authentication failed")
     except sr.UnknownValueError:
         print("Google Speech Recognition could not understand audio")
     except sr.RequestError as e:
