@@ -19,7 +19,15 @@ def verify_voice_print(audio, stored_voice_print):
 
 #Second factor authentication its not a must but it is a good practice
 def verify_second_factor_print(audio, second_factor):
-    return second_factor == "1234"
+    try:
+        pin = recognizer.recognize_google(audio).lower()
+        return pin == "one two three four"
+    except sr.UnknownValueError:
+        print("Sorry, I didn't get that")
+        return False
+    except sr.RequestError as e:
+        print("Sorry, I couldn't request results from Google Speech Recognition service; {0}".format(e))
+        return False
 
 
 #executing function for system commands
@@ -38,7 +46,10 @@ def process_audio(recognizer, audio):
         if verify_voice_print(audio, user_voice_prints[user_id]):
             print("Voice print verified")
         #Time for the second factor
-            second_factor = input("Enter PIN: ")
+            second_factor = input("Please say your PIN: ")
+            with sr.Microphone() as mic:
+                recognizer.adjust_for_ambient_noise(mic, duration=0.1)
+                audio_pin = recognizer.listen(mic)
             if verify_second_factor_print(audio, second_factor):
                 print("Second factor verified")
                 if "open google" in text or "open web browser" in text:
@@ -49,6 +60,8 @@ def process_audio(recognizer, audio):
                         execute_command(["google-chrome"])
                     elif platform.system() == "Darwin":
                         execute_command(["open -a", "Google Chrome"])  
+                    else:
+                        print("Command not recognized")
                 else:
                     print("Second factor authentication failed")
             else:
