@@ -21,17 +21,6 @@ def verify_voice_print(audio, stored_voice_print):
     return create_voice_print(audio) == stored_voice_print
 
 #Second factor authentication its not a must but it is a good practice
-def verify_pin(audio, second_factor):
-    try:
-        pin = recognizer.recognize_google(audio).lower()
-        print(f"PIN you said: {pin}")
-    except sr.UnknownValueError:
-        print("Sorry, I didn't get that")
-        return False
-    except sr.RequestError as e:
-        print("Sorry, I couldn't request results from Google Speech Recognition service; {0}".format(e))
-        return False
-
 
 #executing function for system commands
 def execute_command(command):
@@ -44,16 +33,16 @@ def process_audio(recognizer, audio):
     try:
         text = recognizer.recognize_google(audio).lower()
         print("You said: " + text)
-        
-        if "open google" in text or "open web browser" in text:
+
+        user_id = "user1"
+        if verify_voice_print(audio, user_voice_prints[user_id]):
             print("Voice print verifed.")
             #ask for pin
-            print("Please say your pin.")
-            with sr.Microphone() as mic:
-                recognizer.adjust_for_ambient_noise(mic, duration=0.1)
-                audio_pin = recognizer.listen(mic)
-            if verify_pin(audio_pin):
+            second_factor = input("Enter PIN:")
+            expected_pin = "1234"
+            if second_factor == expected_pin:
                 print("Second factor verified")
+                print("Opening web browser...")
                 if platform.system() == "Windows":
                      execute_command(["start chrome"])
                 elif platform.system() == "Linux":
@@ -61,9 +50,9 @@ def process_audio(recognizer, audio):
                 elif platform.system() == "Darwin":
                     execute_command(["open -a", "Google Chrome"])  
                 else:
-                    print("Command not recognized")
+                    print("Second factor authentication failed")
             else:
-                print("Second factor authentication failed")
+                print("Voice authentication failed")
     except sr.UnknownValueError:
         print("Google Speech Recognition could not understand audio")
     except sr.RequestError as e:
