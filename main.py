@@ -10,16 +10,6 @@ user_voice_prints ={
 
 expected_pin = "1234"
 
-#Funcion to simulate the creation of a voice print
-def create_voice_print(audio):
-    return "this is a sample voice print"
-
-#Function voice proint verification
-def verify_voice_print(audio, stored_voice_print):
-    return create_voice_print(audio) == stored_voice_print
-
-#Second factor authentication its not a must but it is a good practice
-
 #executing function for system commands
 def execute_command(command):
     try:
