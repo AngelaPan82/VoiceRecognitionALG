@@ -1,7 +1,7 @@
 # VoiceRecognitionALG
-Simple voice recognition algorithm
+<h1>Simple voice recognition algorithm</h1>
 
-<h1>DOWNLOAD THE ZIP FILE</h1>
+<h3>DOWNLOAD THE ZIP FILE</h3>
 
 <h2>1. First step: Turn on your console log.</h2>
 <h2>2. Navigate to the directory VoiceRecognitionALG</h2>
