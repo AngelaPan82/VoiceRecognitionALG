@@ -75,13 +75,3 @@ while True:
 
 
 
-#try:
- #   while True:
-      #  print("Main loop running")
-  #      time.sleep(0.1)
-#except KeyboardInterrupt:
-    # If keyboard interrupt occurs it stops the program and writes  the following message:
- #   print("\nProgram stopped by user.")
-  #  stop_listening(wait_for_stop=False)
-   # time.sleep(1)
-
