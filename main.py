@@ -45,23 +45,22 @@ def recognize_audio():
         except sr.RequestError as e:
             print(f"Could not request results from Google speech recognition service:")
             return None, None
-    
-while True:
-    audio, command_text = recognize_audio()
-    if audio and command_text:
-        second_factor = input("Enter PIN:")
-        if second_factor == expected_pin:
-            print("Second factor verified.")
-            process_audio(command_text)
+try:   
+    while True:
+        audio, command_text = recognize_audio()
+        if audio and command_text:
+            second_factor = input("Enter PIN:")
+            if second_factor == expected_pin:
+                print("Second factor verified.")
+                process_audio(command_text)
+            else:
+                print("Second factor authentication failed.")
         else:
-            print("Second factor authentication failed.")
-    else:
-        print("Please try again.")
+            print("Please try again.")
            
-    user_input = input("Do you want to continue ? (yes/no):").strip().lower()
-    if user_input != 'yes':
+        user_input = input("Do you want to continue ? (yes/no):").strip().lower()
+        if user_input != 'yes':
+            print("Program stopped by user")
+            break
+except KeyboardInterrupt:
         print("Program stopped by user")
-        break
-
-
-
