@@ -4,9 +4,9 @@ import platform
 
 print("Hi speak to me!")
 
-user_voice_prints ={
-    "user1":"user one",
-}
+#user_voice_prints ={
+ #   "user1":"user one",
+#}
 
 expected_pin = "1234"
 
